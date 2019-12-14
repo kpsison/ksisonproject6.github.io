@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html ng-app="project6">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Project 6</title>
+
+    <!-- Bootstrap css and js files -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <!-- Angular Js file -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js"></script>
+</head>
+<body>
+    <div class="container" ng-controller="jsonCtrl">
+        <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+            <a class="navbar-brand" href="#">Our Website</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">All Advisees</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="gpa.html">Grade Point Averages</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Advisees</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <input type="text" ng-model="search" /> <label>Enter Search Text</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-sm table-striped">
+                    <thead>
+                        <tr>
+                            <th>sid</th>
+                            <th>last name</th>
+                            <th>first name</th>
+                            <th>credit hrs</th>
+                            <th>gpa points</th>
+                            <th>major</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="student in students | filter:search">
+                            <td>{{student.id}}</td>
+                            <td>{{student.last_name}}</td>
+                            <td>{{student.first_name}}</td>
+                            <td>{{student.credit_hrs}}</td>
+                            <td>{{student.gpa_points}}</td>
+                            <td>{{student.major}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Angular script for fetching the data form json file and display in the table -->
+    <script>
+        // Load the project 6 application or create the module of project 6
+        var app = angular.module('project6', []);
+
+        //Now app is the complete application object that has controllers
+        // In this controller we have $scope and $http modules
+        app.controller('jsonCtrl', function ($scope, $http) {
+
+            // The following the get promise that will read the josn data
+            // and send the response in the form of json data.
+            $http.get("students.json") // Give the JSON file name in get functions
+                .then(function (response) { // The then is the promise function it will fetch data
+                    $scope.students = response.data; // This line assign the json data to $scope student
+                                                     // this will be accessible in the page
+                });
+        });
+    </script>
+</body>
+</html>
